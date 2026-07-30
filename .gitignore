@@ -1,0 +1,34 @@
+# ── build & tooling ──────────────────────────────────────────────────────────
+node_modules
+dist
+.DS_Store
+*.local
+.env
+.env.*
+
+# ── ЛИЙД ДАННИ — НИКОГА В GIT ────────────────────────────────────────────────
+# This app handles real contact data: owner names and phone numbers of actual
+# companies. Every artefact the app can produce is an export of that data.
+#
+# Committed:     source code, configs, and the seed script text in
+#                src/seed/autoclick.ts (sales copy — no customer data in it).
+# Never committed: anything a lead ever passed through.
+#
+# The app's own outputs, by the exact names it writes:
+#   · Експорт CSV   → "<кампания>-<дата>.csv"       (leads: names, phones, statuses)
+#   · Експорт JSON  → "callcockpit-<дата>.json"     (the ENTIRE state, all campaigns)
+*.csv
+callcockpit-*.json
+
+# Any directory used to stage or archive lead lists.
+exports/
+data/
+leads/
+backup/
+backups/
+
+# Loose scratch/backup files that tend to collect lead data.
+*.bak
+*.orig
+*~
+scratch/
