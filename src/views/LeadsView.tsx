@@ -10,6 +10,7 @@ import { ImportCsvModal } from "./ImportCsvModal";
 import { uid } from "../lib/id";
 import { formatBgShortISO, toISODate } from "../lib/dates";
 import { statusLabel } from "../lib/cadence";
+import { comparePriorityValues, priorityFieldKey } from "../lib/priority";
 
 const MAX_FILTER_VALUES = 15;
 
@@ -98,6 +99,10 @@ export function LeadsView({ onOpenLead }: { onOpenLead: (id: string) => void }) 
         }
         if (def?.type === "number") {
           return ((Number(a.fields[sortKey]) || 0) - (Number(b.fields[sortKey]) || 0)) * sortDir;
+        }
+        // „Приоритет" needs semantic order (ВИСОК → СРЕДЕН → НИСЪК), not alphabetical.
+        if (sortKey === priorityFieldKey(campaign)) {
+          return comparePriorityValues(fieldText(a, sortKey), fieldText(b, sortKey)) * sortDir;
         }
         return fieldText(a, sortKey).localeCompare(fieldText(b, sortKey), "bg") * sortDir;
       });

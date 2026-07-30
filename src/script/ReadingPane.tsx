@@ -14,18 +14,35 @@ export function ReadingPane({
   ctx,
   onFocusVerbatim,
   onSetStatus,
+  onGoToNode,
 }: {
   campaign: Campaign;
   node: ScriptNode | null;
   ctx: TokenContext;
   onFocusVerbatim: () => void;
   onSetStatus: (statusId: string) => void;
+  onGoToNode: (nodeId: string) => void;
 }) {
+  // Persistent jump to the close, shown on every node except the close itself.
+  const closeNode = campaign.script.nodes.find((n) => n.id === campaign.closeNodeId);
+  const closeButton =
+    closeNode && closeNode.id !== node?.id ? (
+      <button
+        className="btn close-jump"
+        onClick={() => onGoToNode(closeNode.id)}
+        title={closeNode.title}
+      >
+        → {closeNode.group}
+      </button>
+    ) : null;
+
   if (!node) {
     return (
       <div className="reader">
         <div className="reader-head">
           <span className="dim">Избери възел от схемата</span>
+          <div className="spacer" />
+          {closeButton}
         </div>
         <div className="reader-scroll">
           <div className="dim" style={{ fontSize: 15 }}>
@@ -51,6 +68,8 @@ export function ReadingPane({
           {node.group}
         </span>
         <span className="ttl">{node.title}</span>
+        <div className="spacer" />
+        {closeButton}
       </div>
       <div className="reader-scroll">
         <div className="grow">

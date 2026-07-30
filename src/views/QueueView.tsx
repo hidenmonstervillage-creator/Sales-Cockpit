@@ -4,6 +4,7 @@ import { useStore } from "../store";
 import { StatusChip } from "../components/StatusChip";
 import { isClosedStatus } from "../lib/cadence";
 import { daysWord, diffDays, formatBgShortISO, formatDotShortISO, todayISO } from "../lib/dates";
+import { comparePriorityValues, priorityFieldKey } from "../lib/priority";
 
 interface Row {
   campaign: Campaign;
@@ -24,20 +25,6 @@ function primaryName(campaign: Campaign, lead: Lead): string {
   return String(value || "").trim() || "(без име)";
 }
 
-/** Campaign-generic: a field literally called „Приоритет" drives the priority sort. */
-function priorityKey(campaign: Campaign): string | null {
-  const f = campaign.leadFields.find((x) => /приоритет/i.test(x.label));
-  return f?.key ?? null;
-}
-
-function comparePriority(a: string, b: string): number {
-  const na = Number(a);
-  const nb = Number(b);
-  if (a && b && !Number.isNaN(na) && !Number.isNaN(nb)) return na - nb;
-  if (!a && b) return 1;
-  if (a && !b) return -1;
-  return a.localeCompare(b, "bg");
-}
 
 export function QueueView({
   onOpenLead,
@@ -53,7 +40,7 @@ export function QueueView({
     const campaigns = scope === "active" ? [campaign] : state.campaigns;
     const out: Row[] = [];
     for (const c of campaigns) {
-      const pKey = priorityKey(c);
+      const pKey = priorityFieldKey(c);
       for (const lead of c.leads) {
         if (isClosedStatus(c, lead.статус)) continue;
         if (!lead.nextAction?.date) continue;
@@ -68,7 +55,7 @@ export function QueueView({
     }
     out.sort((a, b) => {
       if (sortMode === "priority") {
-        const p = comparePriority(a.priority, b.priority);
+        const p = comparePriorityValues(a.priority, b.priority);
         if (p !== 0) return p;
       }
       return a.date.localeCompare(b.date);

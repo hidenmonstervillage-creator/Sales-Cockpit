@@ -39,6 +39,8 @@ function normalizeCampaign(c: Campaign): Campaign {
   const needsLayout = nodes.length > 0 && nodes.every((n) => n.position.x === 0 && n.position.y === 0);
   return {
     ...c,
+    // A closeNodeId pointing at a deleted node must not render a dead button.
+    closeNodeId: nodes.some((n) => n.id === c.closeNodeId) ? c.closeNodeId : undefined,
     calc: c.calc ?? { investment: 0, label: "лв" },
     statuses: c.statuses ?? [],
     cadence: (c.cadence ?? []).map((s) => ({ ...s, id: s.id || uid("cad") })),

@@ -79,7 +79,8 @@ export function autoMapColumns(campaign: Campaign, headers: string[]): ColumnMap
 /** Resolves a raw Статус cell to a status id, or keeps the raw text verbatim. */
 export function resolveStatusValue(campaign: Campaign, raw: string): string {
   const value = raw.trim();
-  if (!value) return campaign.statuses[0]?.id ?? "";
+  // Empty cell = not yet called. Renders as „—", stays out of the queue.
+  if (!value) return "";
   const hit = campaign.statuses.find((s) => norm(s.label) === norm(value));
   return hit ? hit.id : value;
 }
@@ -94,7 +95,9 @@ export function buildLeadsFromCsv(
       id: uid("lead"),
       fields: {},
       prep: {},
-      статус: campaign.statuses[0]?.id ?? "",
+      // No status until one is picked. Defaulting to statuses[0] would claim a
+      // never-called lead already has an outcome (and „Не вдига" carries retryDays).
+      статус: "",
       calls: [],
     };
     for (const f of campaign.prepFields) lead.prep[f.key] = "";

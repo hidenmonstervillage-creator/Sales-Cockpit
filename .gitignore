@@ -19,6 +19,16 @@ dist
 #   · Експорт JSON  → "callcockpit-<дата>.json"     (the ENTIRE state, all campaigns)
 *.csv
 callcockpit-*.json
+autoclick-ready.json
+
+# Named patterns above are not enough on their own — a state file saved under any
+# other name would sail straight through. So: NO json at the repo root except the
+# handful that are genuinely config. Anything else there is assumed to be data.
+# (Only matches the root; src/**.json and .claude/launch.json are unaffected.)
+/*.json
+!/package.json
+!/package-lock.json
+!/tsconfig.json
 
 # Any directory used to stage or archive lead lists.
 exports/

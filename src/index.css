@@ -769,6 +769,20 @@ table.tbl tbody tr.overdue td:first-child {
   gap: 14px;
   align-items: flex-start;
 }
+/* Persistent one-click jump to the close. Lives in the fixed header so a long
+   node body can never scroll it out of reach mid-call. */
+.close-jump {
+  background: rgba(224, 82, 74, 0.16);
+  border-color: var(--danger);
+  color: #f0938c;
+  font-weight: 700;
+  padding: 4px 12px;
+}
+.close-jump:hover {
+  background: rgba(224, 82, 74, 0.3);
+  border-color: #f0938c;
+}
+
 .reader-hint {
   font-size: 13px;
   color: var(--txt-3);

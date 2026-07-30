@@ -111,6 +111,11 @@ export interface Campaign {
   statuses: Status[];
   cadence: CadenceStep[];
   cadenceRules?: string;
+  /**
+   * Node the reading pane always offers a one-click jump to — the close.
+   * A fast „да" must never mean hunting the canvas. Empty = no button.
+   */
+  closeNodeId?: string;
   leadFields: LeadField[];
   prepFields: PrepField[];
   script: { nodes: ScriptNode[]; edges: ScriptEdge[] };

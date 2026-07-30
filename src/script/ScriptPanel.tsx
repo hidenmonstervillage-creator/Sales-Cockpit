@@ -220,6 +220,18 @@ function ScriptPanelInner({
     setDrawerNodeId(node.id);
   }
 
+  /** Select a node and bring it into view — one click, no hunting the canvas. */
+  const goToNode = useCallback(
+    (id: string) => {
+      setSelectedNodeId(id);
+      const target = scriptNodes.find((n) => n.id === id);
+      if (target) {
+        fitView({ nodes: [{ id }], padding: 0.55, duration: 220, maxZoom: 1 });
+      }
+    },
+    [fitView, scriptNodes],
+  );
+
   function relayout() {
     updateCampaign((c) => ({
       ...c,
@@ -350,6 +362,7 @@ function ScriptPanelInner({
         ctx={ctx}
         onFocusVerbatim={onFocusVerbatim}
         onSetStatus={onSetStatus}
+        onGoToNode={goToNode}
       />
     </div>
   );

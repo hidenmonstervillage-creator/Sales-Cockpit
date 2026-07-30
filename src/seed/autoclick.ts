@@ -306,6 +306,7 @@ export function createAutoClickCampaign(): Campaign {
     calc: { investment: 2900, label: "лв" },
     cadenceRules:
       `Никое съобщение без нова стойност; кратки, 3–4 реда; персонализирани с града му.`,
+    closeNodeId: "zatvaryane",
     statuses: [
       { id: "ne-vdiga", label: "Не вдига", color: "gray", retryDays: 1 },
       { id: "gk-blok", label: "GK блок", color: "gray" },

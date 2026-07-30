@@ -192,6 +192,26 @@ function GeneralTab({
       </div>
 
       <label className="label" style={{ margin: 0 }}>
+        Възел „затваряне"
+      </label>
+      <div className="row">
+        <select
+          className="select"
+          style={{ width: 280 }}
+          value={campaign.closeNodeId ?? ""}
+          onChange={(e) => patch({ closeNodeId: e.target.value })}
+        >
+          <option value="">— без бутон —</option>
+          {campaign.script.nodes.map((n) => (
+            <option key={n.id} value={n.id}>
+              {n.group} · {n.title}
+            </option>
+          ))}
+        </select>
+        <span className="dim">постоянен бутон в панела за четене, от всеки възел</span>
+      </div>
+
+      <label className="label" style={{ margin: 0 }}>
         Правила в опашката
       </label>
       <textarea
